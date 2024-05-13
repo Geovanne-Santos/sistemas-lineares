@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 import { calcularDeterminante } from "./functions/calculator";
 import { gerarMatriz } from "./functions/gerarMatriz";
+import Input from "./components/Input";
+
 
 function App() {
   const [matriz, setMatriz] = useState([
-    [0, 0, 0],
-    [0, 0, 0],
-    [0, 0, 0],
+    [0, 0, 0, 0],
+    [0, 0, 0, 0],
+    [0, 0, 0, 0],
   ]);
 
   const [determinante, setDeterminante] = useState(null);
@@ -35,96 +37,28 @@ function App() {
         Calculadora de Sistemas Lineares
       </h1>
       <form onSubmit={handleSubmit} className="mb-8">
-        <div className="flex items-center justify-center mb-4">
-          <p className="mx-2">X</p>
-          <input
-            type="number"
-            value={matriz[0][0]}
-            onChange={(e) => handleInputChange(0, 0, e)}
-            className="w-12 mx-2 py-1 border border-gray-300 rounded text-center appearance-none"
-          />
-          <p className="mx-2">Y</p>
-          <input
-            type="number"
-            value={matriz[0][1]}
-            onChange={(e) => handleInputChange(0, 1, e)}
-            className="w-12 mx-2 py-1 border border-gray-300 rounded text-center appearance-none"
-          />
-          <p className="mx-2">Z</p>
-          <input
-            type="number"
-            value={matriz[0][2]}
-            onChange={(e) => handleInputChange(0, 2, e)}
-            className="w-12 mx-2 py-1 border border-gray-300 rounded text-center appearance-none"
-          />
-          <p className="mx-2">=</p>
-          <input
-            type="number"
-            value={matriz[0][2]}
-            onChange={(e) => handleInputChange(0, 2, e)}
-            className="w-12 mx-2 py-1 border border-gray-300 rounded text-center appearance-none"
-          />
-        </div>
-        <div className="flex items-center justify-center mb-4">
-          <p className="mx-2">X</p>
-          <input
-            type="number"
-            value={matriz[0][0]}
-            onChange={(e) => handleInputChange(1, 0, e)}
-            className="w-12 mx-2 py-1 border border-gray-300 rounded text-center appearance-none"
-          />
-          <p className="mx-2">Y</p>
-          <input
-            type="number"
-            value={matriz[0][1]}
-            onChange={(e) => handleInputChange(1, 1, e)}
-            className="w-12 mx-2 py-1 border border-gray-300 rounded text-center appearance-none"
-          />
-          <p className="mx-2">Z</p>
-          <input
-            type="number"
-            value={matriz[0][2]}
-            onChange={(e) => handleInputChange(1, 2, e)}
-            className="w-12 mx-2 py-1 border border-gray-300 rounded text-center appearance-none"
-          />
-          <p className="mx-2">=</p>
-          <input
-            type="number"
-            value={matriz[0][2]}
-            onChange={(e) => handleInputChange(1, 2, e)}
-            className="w-12 mx-2 py-1 border border-gray-300 rounded text-center appearance-none"
-          />
-        </div>
-        <div className="flex items-center justify-center">
-          <p className="mx-2">X</p>
-          <input
-            type="number"
-            value={matriz[0][0]}
-            onChange={(e) => handleInputChange(2, 0, e)}
-            className="w-12 mx-2 py-1 border border-gray-300 rounded text-center appearance-none"
-          />
-          <p className="mx-2">Y</p>
-          <input
-            type="number"
-            value={matriz[0][1]}
-            onChange={(e) => handleInputChange(2, 1, e)}
-            className="w-12 mx-2 py-1 border border-gray-300 rounded text-center appearance-none"
-          />
-          <p className="mx-2">Z</p>
-          <input
-            type="number"
-            value={matriz[0][2]}
-            onChange={(e) => handleInputChange(2, 2, e)}
-            className="w-12 mx-2 py-1 border border-gray-300 rounded text-center appearance-none"
-          />
-          <p className="mx-2">=</p>
-          <input
-            type="number"
-            value={matriz[0][2]}
-            onChange={(e) => handleInputChange(2, 2, e)}
-            className="w-12 mx-2 py-1 border border-gray-300 rounded text-center appearance-none"
-          />
-        </div>
+        {matriz.map((row, rowIndex) => (
+          <div key={rowIndex} className="flex items-center justify-center mb-4">
+            {row.map((col, colIndex) => (
+              <React.Fragment key={colIndex}>
+                <p className="mx-2"> {String.fromCharCode(88 + colIndex)}</p>
+                <Input
+                  value={matriz[rowIndex][colIndex]}
+                  onChange={handleInputChange}
+                  linha={rowIndex}
+                  coluna={colIndex}
+                />
+              </React.Fragment>
+            ))}
+            <p className="mx-2">=</p>
+            <Input
+              value={matriz[rowIndex][2]}
+              onChange={handleInputChange}
+              linha={rowIndex}
+              coluna={2}
+            />
+          </div>
+        ))}
         <button
           type="submit"
           className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
