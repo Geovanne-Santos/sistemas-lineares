@@ -2,19 +2,23 @@ import React, { useState } from "react";
 import { calcularDeterminante } from "./functions/calculadoraDeterminante";
 import { gerarMatriz } from "./functions/gerarMatriz";
 import Input from "./components/Input";
-import { classificarSistema } from "./functions/classificarSistema";
+import { classificarSistema } from "./functions/classificarSistema.js";
 
 function App() {
   const [matriz, setMatriz] = useState([
-    [0, 0, 0, 0],
-    [0, 0, 0, 0],
-    [0, 0, 0, 0]
+    [null, null, null, null],
+    [null, null, null, null],
+    [null, null, null, null],
   ]);
 
   const [determinante, setDeterminante] = useState(null);
+  const [classificacao, setClassificacao] = useState(null);
   const [x, setX] = useState(null);
   const [y, setY] = useState(null);
   const [z, setZ] = useState(null);
+  const [detX, setDetX] = useState(null);
+  const [detY, setDetY] = useState(null);
+  const [detZ, setDetZ] = useState(null);
 
   // Função para lidar com a mudança de valor nos campos de entrada da matriz
   const handleInputChange = (linha, coluna, event) => {
@@ -32,10 +36,16 @@ function App() {
     setDeterminante(det);
 
     if (det !== 0) {
-      const detX = calcularDeterminante(substituirColuna(matriz, 0, obterColunaResultados(matriz)));
-      const detY = calcularDeterminante(substituirColuna(matriz, 1, obterColunaResultados(matriz)));
-      const detZ = calcularDeterminante(substituirColuna(matriz, 2, obterColunaResultados(matriz)));
-      
+      const detX = calcularDeterminante(
+        substituirColuna(matriz, 0, obterColunaResultados(matriz))
+      );
+      const detY = calcularDeterminante(
+        substituirColuna(matriz, 1, obterColunaResultados(matriz))
+      );
+      const detZ = calcularDeterminante(
+        substituirColuna(matriz, 2, obterColunaResultados(matriz))
+      );
+
       const xValue = detX / det;
       const yValue = detY / det;
       const zValue = detZ / det;
@@ -44,16 +54,20 @@ function App() {
       setY(yValue);
       setZ(zValue);
 
+      setDetX(detX);
+      setDetY(detY);
+      setDetZ(detZ);
+
       // Chame a função para classificar o sistema
-      const classificacao = classificarSistema(matriz);
-      console.log(classificacao);
+      const classificacaoMatrix = classificarSistema(det, detX, detY, detZ);
+      setClassificacao(classificacaoMatrix)
+      console.log(classificacaoMatrix)
     } else {
       setX(null);
       setY(null);
       setZ(null);
     }
   };
-
 
   // Função para substituir uma coluna em uma matriz
   const substituirColuna = (matrix, coluna, novaColuna) => {
@@ -64,7 +78,7 @@ function App() {
 
   // Função para obter a coluna de resultados de uma matriz
   const obterColunaResultados = (matrix) => {
-    return matrix.map(row => row[3]);
+    return matrix.map((row) => row[3]);
   };
 
   console.log(gerarMatriz(matriz));
@@ -79,7 +93,9 @@ function App() {
           <div key={rowIndex} className="flex items-center justify-center mb-4">
             {row.map((col, colIndex) => (
               <React.Fragment key={colIndex}>
-                <p className="mx-2">{colIndex === 3 ? "=" : String.fromCharCode(88 + colIndex)}</p>
+                <p className="mx-2">
+                  {colIndex === 3 ? "=" : String.fromCharCode(88 + colIndex)}
+                </p>
                 <Input
                   value={matriz[rowIndex][colIndex]}
                   onChange={handleInputChange}
@@ -97,13 +113,26 @@ function App() {
           Calcular Determinante
         </button>
       </form>
-      
+
       {determinante !== null && (
         <div className="mt-4">
           <p>O determinante da matriz é: {determinante}</p>
-          {x !== null && <p>O valor de x é: {x}</p>}
-          {y !== null && <p>O valor de y é: {y}</p>}
-          {z !== null && <p>O valor de z é: {z}</p>}
+          {x !== null && (
+            <p>
+              O valor de x é: {x} (Determinante de x: {detX})
+            </p>
+          )}
+          {y !== null && (
+            <p>
+              O valor de y é: {y} (Determinante de y: {detY})
+            </p>
+          )}
+          {z !== null && (
+            <p>
+              O valor de z é: {z} (Determinante de z: {detZ})
+            </p>
+          )}
+          {classificacao && <p>Classificacao: {classificacao}</p>}
         </div>
       )}
     </div>

@@ -1,16 +1,5 @@
 // Função para classificar o sistema linear
-export function classificarSistema(matriz) {
-  const detPrincipal = calcularDeterminante(matriz);
-  const detX = calcularDeterminante(
-    substituirColuna(matriz, 0, obterColunaResultados(matriz))
-  );
-  const detY = calcularDeterminante(
-    substituirColuna(matriz, 1, obterColunaResultados(matriz))
-  );
-  const detZ = calcularDeterminante(
-    substituirColuna(matriz, 2, obterColunaResultados(matriz))
-  );
-
+export function classificarSistema(detPrincipal, detX, detY, detZ) {
   if (detPrincipal !== 0) {
     if (detX === 0 && detY === 0 && detZ === 0) {
       return "O sistema é possível e determinado (solução única).";
