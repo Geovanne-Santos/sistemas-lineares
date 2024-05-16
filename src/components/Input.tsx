@@ -1,6 +1,5 @@
 import React from "react";
 
-// Componente de Input reutilizável
 const Input = ({ value, onChange, linha, coluna }) => {
   return (
     <input

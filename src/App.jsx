@@ -20,7 +20,6 @@ function App() {
   const [detY, setDetY] = useState(null);
   const [detZ, setDetZ] = useState(null);
 
-  // Função para lidar com a mudança de valor nos campos de entrada da matriz
   const handleInputChange = (linha, coluna, event) => {
     const newValue = parseFloat(event.target.value);
     const newMatriz = matriz.map((row, i) =>
@@ -29,7 +28,6 @@ function App() {
     setMatriz(newMatriz);
   };
 
-  // Função para lidar com o envio do formulário
   const handleSubmit = (event) => {
     event.preventDefault();
     const det = calcularDeterminante(matriz);
@@ -58,7 +56,6 @@ function App() {
       setDetY(detY);
       setDetZ(detZ);
 
-      // Chame a função para classificar o sistema
       const classificacaoMatrix = classificarSistema(det, detX, detY, detZ);
       setClassificacao(classificacaoMatrix)
       console.log(classificacaoMatrix)
@@ -69,14 +66,12 @@ function App() {
     }
   };
 
-  // Função para substituir uma coluna em uma matriz
   const substituirColuna = (matrix, coluna, novaColuna) => {
     return matrix.map((row, i) =>
       row.map((value, j) => (j === coluna ? novaColuna[i] : value))
     );
   };
 
-  // Função para obter a coluna de resultados de uma matriz
   const obterColunaResultados = (matrix) => {
     return matrix.map((row) => row[3]);
   };
